@@ -1,4 +1,4 @@
-package com.uscold.labelsetup.test.utility;
+package com.uscold.GoliveSetup.test.utility;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;

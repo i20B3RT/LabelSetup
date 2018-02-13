@@ -1,19 +1,21 @@
-package com.uscold.labelsetup.test;
+package com.uscold.GoliveSetup.test;
 
-import com.uscold.labelsetup.test.utility.AssistPage;
-import com.uscold.labelsetup.test.utility.TestConstants;
-import com.uscold.labelsetup.test.utility.WebDriverFactory;
+import com.uscold.GoliveSetup.test.utility.AssistPage;
+import com.uscold.GoliveSetup.test.utility.TestConstants;
+import com.uscold.GoliveSetup.test.utility.WebDriverFactory;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestContext;
 import org.testng.annotations.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 
-import static com.uscold.labelsetup.test.utility.TestConstants.GET_ELEMENT_TIMEOUT;
+import static com.uscold.GoliveSetup.test.utility.TestConstants.GET_ELEMENT_TIMEOUT;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -33,6 +35,7 @@ public abstract class Abstract extends BaseTestNGTest {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+
 
     public ExtentReports extent;
     public ExtentTest extentTest;
@@ -54,8 +57,8 @@ public abstract class Abstract extends BaseTestNGTest {
     }
 
     @BeforeTest
-    public void setExtent(){
-        extent = new ExtentReports(System.getProperty("user.dir")+"/test-output/ExtentReport.html", true);
+    public void setExtent() {
+        extent = new ExtentReports(System.getProperty("user.dir") + "/test-output/ExtentReport.html", true);
         extent.addSystemInfo("Host Name", "PC");
         extent.addSystemInfo("User Name", "Robert Morales");
         extent.addSystemInfo("Environment", "eWM: 9109");
@@ -96,21 +99,19 @@ public abstract class Abstract extends BaseTestNGTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown(ITestResult result) throws IOException{
+    public void tearDown(ITestResult result) throws IOException {
 
-        if(result.getStatus()==ITestResult.FAILURE){
-            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getName()); //to add name in extent report
-            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getThrowable()); //to add error/exception in extent report
+        if (result.getStatus() == ITestResult.FAILURE) {
+            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getName()); //to add name in extent report
+            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getThrowable()); //to add error/exception in extent report
 
             String screenshotPath = getScreenshot(driver, result.getName());
             extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(screenshotPath)); //to add screenshot in extent report
             //extentTest.log(LogStatus.FAIL, extentTest.addScreencast(screenshotPath)); //to add screencast/video in extent report
-        }
-        else if(result.getStatus()==ITestResult.SKIP){
+        } else if (result.getStatus() == ITestResult.SKIP) {
             extentTest.log(LogStatus.SKIP, "Test Case SKIPPED IS " + result.getName());
             //logger.log(LogStatus.SKIP, this.getClass().getSimpleName() + " Test Case Skipped");
-        }
-        else if(result.getStatus()==ITestResult.SUCCESS){
+        } else if (result.getStatus() == ITestResult.SUCCESS) {
             extentTest.log(LogStatus.PASS, "Test Case PASSED IS " + result.getName());
             //logger.log(LogStatus.PASS, this.getClass().getSimpleName() + " Test Case Success and Title Verified");
             String screenshotPath = getScreenshot(driver, result.getName());
@@ -124,7 +125,7 @@ public abstract class Abstract extends BaseTestNGTest {
     }
 
     @AfterTest(alwaysRun = true)
-    public void endReport(){
+    public void endReport() {
         extent.flush();
         extent.close();
     }
@@ -156,16 +157,17 @@ public abstract class Abstract extends BaseTestNGTest {
             return false;
         }
     }
-    public boolean isElementFound( String text) {
+
+    public boolean isElementFound(String text) {
         long startedAt = System.currentTimeMillis();
         RuntimeException caughtEx = null;
-        try{
+        try {
             WebElement webElement = driver.findElement(By.id(text));
-            System.out.println("isElementFound : true :"+text + "true");
+            System.out.println("isElementFound : true :" + text + "true");
             LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAt) + " to click on " + text);
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
-            System.out.println("isElementFound : false :"+text);
+            System.out.println("isElementFound : false :" + text);
             return false;
         }
         return true;
@@ -175,7 +177,7 @@ public abstract class Abstract extends BaseTestNGTest {
         return driver;
     }
 
-    public static String getScreenshot(WebDriver driver, String screenshotName) throws IOException{
+    public static String getScreenshot(WebDriver driver, String screenshotName) throws IOException {
         String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
         TakesScreenshot ts = (TakesScreenshot) driver;
         File source = ts.getScreenshotAs(OutputType.FILE);
@@ -186,4 +188,5 @@ public abstract class Abstract extends BaseTestNGTest {
         FileUtils.copyFile(source, finalDestination);
         return destination;
     }
+
 }

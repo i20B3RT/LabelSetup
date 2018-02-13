@@ -1,6 +1,6 @@
-package com.uscold.labelsetup.test.conf;
+package com.uscold.GoliveSetup.test.conf;
 
-import com.uscold.labelsetup.test.Abstract;
+import com.uscold.GoliveSetup.test.Abstract;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;

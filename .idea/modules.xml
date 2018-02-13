@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LabelSetup.iml" filepath="$PROJECT_DIR$/LabelSetup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GoLiveSetup.iml" filepath="$PROJECT_DIR$/GoLiveSetup.iml" />
     </modules>
   </component>
 </project>

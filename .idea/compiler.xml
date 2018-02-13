@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="GoLiveSetup" />
         <module name="LabelSetup" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="GoLiveSetup" target="1.8" />
       <module name="LabelSetup" target="1.8" />
     </bytecodeTargetLevel>
   </component>

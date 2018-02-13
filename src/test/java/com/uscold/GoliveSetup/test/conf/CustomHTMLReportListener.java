@@ -1,4 +1,4 @@
-package com.uscold.labelsetup.test.conf;
+package com.uscold.GoliveSetup.test.conf;
 
 import org.testng.*;
 import org.testng.collections.Lists;

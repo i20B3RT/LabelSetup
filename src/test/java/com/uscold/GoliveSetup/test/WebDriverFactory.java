@@ -1,4 +1,4 @@
-package com.uscold.labelsetup.test;
+package com.uscold.GoliveSetup.test;
 
 
 import org.apache.log4j.Logger;
