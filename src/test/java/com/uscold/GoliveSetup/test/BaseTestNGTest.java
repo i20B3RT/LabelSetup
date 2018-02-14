@@ -12,14 +12,6 @@ import org.testng.annotations.*;
 public abstract class BaseTestNGTest {
     private static final Logger LOGGER = Logger.getLogger(BaseTestNGTest.class);
 
-//    private String screenshotPath = "";
-
-//    ExtentReports extent;
-//    ExtentTest test;
-//    ExtentTest logger;
-//    WebDriver driver;
-
-
     @BeforeClass
     public void beforeTestConfig(final ITestContext testContext) {
         LOGGER.info(String.format("starting test %s", this.getClass().getSimpleName()));

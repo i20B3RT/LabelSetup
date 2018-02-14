@@ -1,11 +1,11 @@
 package com.uscold.GoliveSetup.test.utility;
 
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.xpath.SourceTree;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,6 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
+import static com.uscold.GoliveSetup.test.utility.TestConstants.GET_ELEMENT_TIMEOUT;
 
 
 public class AssistPage {
@@ -42,10 +44,6 @@ public class AssistPage {
 
 
     public static String TESTDATA_SHEET_PATH = System.getProperty("user.dir") + "/test-input/Label.xlsx";
-
-            //+"restAPIRestAssureFW/src/main/java/com/qa/testdata/APITestData.xlsx"
-    //    public static String filename = System.getProperty("user.dir")+"\\test-input\\Label.xlsx";
-//    public static String LINK_FILE = System.getProperty("user.dir")+"\\test-input\\Label.xlsx";
 
     public static Object [][] getTestData(String sheetName) {
 
@@ -126,12 +124,12 @@ public class AssistPage {
     }
 
     public static void click(WebElement el) {
-        click(el, TestConstants.GET_ELEMENT_TIMEOUT * 1000);
+        click(el, GET_ELEMENT_TIMEOUT * 1000);
     }
 
     static void click(WebDriver driver, By by) {
         WebElement el = driver.findElement(by);
-        click(el, TestConstants.GET_ELEMENT_TIMEOUT * 1000);
+        click(el, GET_ELEMENT_TIMEOUT * 1000);
     }
 
     public static void chooseModule(WebDriver driver, String moduleName) {
@@ -291,67 +289,28 @@ public class AssistPage {
         }
     }
 
-//    public static WebElement chooseValueFromStandardDropDownByTextMatch(WebDriver driver, String id, String value, String cssSelect, String divClass) throws InterruptedException {
-//        List<WebElement> values = clickOnDropDownLabel(driver, id, value);
-//        return values.stream().filter(el -> el.getAttribute("innerText").trim().equalsIgnoreCase(value)).findFirst().get();
-//    }
-//
-//    public static WebElement chooseValueFromStandardDropDownBySubstring(WebDriver driver, String id, String substring,String cssSelect, String divClass) throws InterruptedException {
-//        List<WebElement> values = clickOnDropDownLabel(driver, id, substring);
-//        return values.stream().filter(el -> el.getAttribute("innerText").trim().toLowerCase().contains(substring.toLowerCase())).findFirst().get();
-//    }
-//
-//    private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind, String cssSelect, String divClass) throws InterruptedException {
-//        WebDriverWait wait = new WebDriverWait(driver, TestConstants.GET_ELEMENT_TIMEOUT);
-//        WebElement accTypeContainer = driver.findElement(By.id(id));
-//        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id), "class", cssSelect)));
-//        WebElement aElem = accTypeContainer.findElement(By.cssSelector(cssSelect));
-//        //scrollTo(driver,aElem);
-//        click(aElem);
-//        //accTypeContainer.findElement(By.xpath("./div/div/input")).sendKeys(textToFind);
-//
-////        WebElement idValTl = driver.findElement(By.id("txt_trailerLengthArr_chosen"));
-////        String idStrTl = String.valueOf(idValTl);
-//////        int idIntTl = Integer.parseInt(idVal);
-////
-////        WebElement idValTt = driver.findElement(By.id("txt_trailerTypeArr"));
-////        String idStrTt = String.valueOf(idValTt);
-//////        int idInt = Integer.parseInt(idVal);
-////
-////        if (idValTl.isDisplayed()&& idStrTl==id){
-////            return accTypeContainer.findElements(By.xpath("//div[@class='chosen-drop']/ul/li"));
-////        }else if (idValTt.isDisplayed()&& idStrTt==id){
-////            return accTypeContainer.findElements(By.xpath("//div[@class='chosen-drop']/ul/li"));
-////        }
-//        return accTypeContainer.findElements(By.xpath(divClass));
-//    }
+    public static WebElement chooseValueFromStandardDropDownByTextMatch(WebDriver driver, String id, String value) throws InterruptedException {
+        List<WebElement> values = clickOnDropDownLabel(driver, id, value);
+        return values.stream().filter(el -> el.getAttribute("innerText").trim().equalsIgnoreCase(value)).findFirst().get();
+    }
 
+    public static WebElement chooseValueFromStandardDropDownBySubstring(WebDriver driver, String id, String substring) throws InterruptedException {
+        List<WebElement> values = clickOnDropDownLabel(driver, id, substring);
+        return values.stream().filter(el -> el.getAttribute("innerText").trim().toLowerCase().contains(substring.toLowerCase())).findFirst().get();
+    }
 
-
-//    public date() {
-//    //Fetch today's date and convert to a string plus_100.
-//    Calendar dateTwo = Calendar.getInstance();
-//    Date dateOne = dateTwo.getTime();
-//    DateFormat dateForm = new SimpleDateFormat("YYMMddhhmm");
-//    String tDay = dateForm.format(dateOne);
-//}
-
-    //Capture New field - Header - Data Field Dropdown
-    public static WebElement chooseValueFromDropDown(WebDriver driver, String xp, String value,String cssSel, String xpath)throws InterruptedException {
-        WebElement accTypeContainer = driver.findElement(By.xpath(xp));
-        WebElement aElem = accTypeContainer.findElement(By.cssSelector(cssSel));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", aElem);
+    private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
+        WebElement accTypeContainer = driver.findElement(By.id(id));
+        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id), "class", "chosen-disabled")));
+        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id), "class", "chosen-disabled")));
+        WebElement aElem = accTypeContainer.findElement(By.cssSelector("a.chosen-single"));
+        //scrollTo(driver,aElem);
         click(aElem);
-        List<WebElement> accTypes = accTypeContainer.findElements(By.xpath(xpath));
-
-        return accTypes.stream().filter(el -> el.getAttribute("innerText").trim().equalsIgnoreCase(value)).findFirst().get();
-//*[@id="1_lblType_chosen"]/div/ul
-
+        //accTypeContainer.findElement(By.xpath("//table[@id='list']//div[contains(@class, 'chosen-drop')]/div[contains(@class, 'chosen-search')]/input")).sendKeys(textToFind);
+        return accTypeContainer.findElements(By.xpath(".//div[@class='chosen-drop']//ul[@class='chosen-results']/li"));
     }
 
-    public static void selectDD (WebDriver driver,String id, String valueName){
-        Select val = new Select(driver.findElement(By.xpath(id)));
-        val.selectByVisibleText(valueName);
-    }
+
 }
 
