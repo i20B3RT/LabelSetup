@@ -45,7 +45,7 @@ public class AssistPage {
 
     public static String TESTDATA_SHEET_PATH = System.getProperty("user.dir") + "/test-input/Label.xlsx";
 
-    public static Object [][] getTestData(String sheetName) {
+    public static Object[][] getLabelMappingData(String sheetName) {
 
         FileInputStream file = null;
         try {
@@ -66,12 +66,42 @@ public class AssistPage {
         // sheet.getRow(0).getLastCellNum());
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
             for (int k = 0; k < sheet.getRow(0).getLastCellNum();k++){
-            data[i][k] = sheet.getRow(i + 1).getCell(k).toString();
-            // System.out.printIn(data[i][k]);
+                data[i][k] = sheet.getRow(i + 1).getCell(k).toString();
+                // System.out.printIn(data[i][k]);
+            }
         }
-    }
         return data;
     }
+
+//    public static Object [][][][][][] getLabelAssignmentData(String sheetName) {
+//        FileInputStream file = null;
+//        try {
+//            file = new FileInputStream(TESTDATA_SHEET_PATH);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            book = WorkbookFactory.create(file);
+//        } catch (InvalidFormatException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        sheet = book.getSheet(sheetName);
+//        Object[][] data = new Object[sheet.getLastRowNum()][sheet.getRow(0).getLastCellNum()];
+//        // System.out.printIn(sheet.getLastRowNum() + "--------" +
+//        // sheet.getRow(0).getLastCellNum());
+//        for (int i = 0; i < sheet.getLastRowNum(); i++) {
+//            for (int k = 0; k < sheet.getRow(0).getLastCellNum();k++){
+//                data[i][k] = sheet.getRow(i + 1).getCell(k).toString();
+//                // System.out.printIn(data[i][k]);
+//            }
+//        }
+//        return data;
+//    }
+
+
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     public static void click(WebElement el, int maxWaitTimeMillis) {
         long startedAt = System.currentTimeMillis();
@@ -140,7 +170,7 @@ public class AssistPage {
             searchModule.clear();
             searchModule.sendKeys(moduleName);
             click(driver.findElement(By.linkText(moduleName)));
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -171,7 +201,7 @@ public class AssistPage {
             click(chosenCustomerOption, maxWaitTimeMillisToBeUsedInChooseFunctions);
             if (isElementPresent(driver, By.id("customerOk")))
                 click(driver.findElement(By.id("customerOk")), maxWaitTimeMillisToBeUsedInChooseFunctions);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -299,7 +329,7 @@ public class AssistPage {
         return values.stream().filter(el -> el.getAttribute("innerText").trim().toLowerCase().contains(substring.toLowerCase())).findFirst().get();
     }
 
-    private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind) throws InterruptedException {
+    private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind) {
         WebDriverWait wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
         WebElement accTypeContainer = driver.findElement(By.id(id));
         wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id), "class", "chosen-disabled")));
